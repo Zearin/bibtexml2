@@ -3,9 +3,9 @@
 
 ## Overall Project
 
-- [ ] Set up Travis-CI (working on it!)
-- [ ] Set up CodeQ.io
-- [ ] Set up Coveralls.io
+- [x] Set up Travis-CI (working on it!)
+- [x] Set up CodeQ.io
+- [x] Set up Coveralls.io
 - [ ] Set up PyPI Version (Crate.io)
 - [ ] Set up Downloads (Crate.io)
 
