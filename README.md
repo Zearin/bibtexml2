@@ -13,6 +13,6 @@
 
 Convert BibTeX files to XML.
 
-Customizable using Pygments.  (Or, of course, )
+Customizable using Pygments.  (Or with XML tools, of course!)
 
 *More to come soon…*
