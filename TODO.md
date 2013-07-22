@@ -3,7 +3,7 @@
 
 ## Overall Project
 
-- [ ] Set up Travis-CI
+- [ ] Set up Travis-CI (working on it!)
 - [ ] Set up CodeQ.io
 - [ ] Set up Coveralls.io
 - [ ] Set up PyPI Version (Crate.io)
