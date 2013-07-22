@@ -35,7 +35,6 @@ from    bibtexml2 import (
 #--------------------------------------------------------------------
 ##  Variables
 #--------------------------------------------------------------------
-
 BibtexLexer = lexer.BibtexLexer
 docstring_format_dict = {
     'human_format': 'BibTeXML2',
@@ -47,11 +46,12 @@ docstring_format_dict = {
 ##  __main__
 #--------------------------------------------------------------------
 def main():
-    arguments = docopt( __doc__.format( program=docstring_format_dict ), 
-                        version='{docstring_format_dict["human_format"]} 2.0', 
-                        options_first=True
-                    )
-    
+    arguments = docopt( 
+        __doc__.format( program=docstring_format_dict ), 
+        version=        '{docstring_format_dict["human_format"]} 2.0', 
+        options_first=  True
+        )
+
     lexer = BibtexLexer()
     
     for f in arguments['<file>']:
@@ -84,8 +84,6 @@ def main():
             else:
                 continue
             
-                
-    
-
+            
 if __name__ == '__main__':
     main()
