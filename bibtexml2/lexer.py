@@ -42,7 +42,7 @@ from pygments.token import (
 #--------------------------------------------------------------------
 
 
-PUBTYPES = frozenset({
+PUBTYPES = frozenset((
     'article',
     'book',
     'booklet',
@@ -57,14 +57,14 @@ PUBTYPES = frozenset({
     'proceedings',
     'techreport',
     'unpublished'
-})
+))
 '''Official bibTeX publication types.'''
 ### TODO: Tokenize as Keyword.Reserved
 
 _pubtypes_re_string = r'|'.join(PUBTYPES)
 
 
-FIELDS = frozenset({
+FIELDS = frozenset((
     'address',
     'annote',
     'author',
@@ -91,7 +91,7 @@ FIELDS = frozenset({
     'url',
     'volume',
     'year',
-})
+))
 '''Standard bibTeX fields.  (Does not include non-standard fields.)'''
 
 
