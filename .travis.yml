@@ -29,7 +29,7 @@ install:
 
 script:
     # finally run tests
-    - env PYTHONPATH=. coverage run --source=bibtexml2 pyvows ./tests
+    - env PYTHONPATH=. coverage run --source=bibtexml2 python -m pyvows ./tests
 
 
 after_success:
