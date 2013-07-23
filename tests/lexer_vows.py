@@ -95,16 +95,14 @@ class FilesToLex(Vows.Context):
         class EntriesAndFields(Vows.Context):
             def topic(self, parent_topic):
                 tokentypes = {Token.Keyword.Declaration, Token.Name.Attribute}
-                if parent_topic[0] in tokentypes:
-                    yield parent_topic[1]
+                if parent_topic['token'][0] in tokentypes:
+                    yield parent_topic['token'][1]
                     
             def contain_no_whitespace(self, topic):
-                expect(topic).Not.to_match(r'\s+')
-                    
-                    
+                expect(topic).not_to_match(r'\s+')
+        
+        
         class Entries(Vows.Context):
             def topic(self, parent_topic):
                 if parent_topic[0] == Token.Keyword.Declaration:
                     yield parent_topic[1]
-        
-                
