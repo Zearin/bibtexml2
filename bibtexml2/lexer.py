@@ -61,7 +61,7 @@ PUBTYPES = frozenset({
 '''Official bibTeX publication types.'''
 ### TODO: Tokenize as Keyword.Reserved
 
-_pubtypes_re_string = '|'.join(PUBTYPES)
+_pubtypes_re_string = r'|'.join(PUBTYPES)
 
 
 FIELDS = frozenset({
@@ -125,7 +125,7 @@ class BibtexLexer(RegexLexer):
     filenames   = ['*.bib']
     tokens      = {
         'whitespace': [
-            (r'\s+', Whitespace)
+            (r'\s+',    Whitespace)
         ],
 
         'bracket': [
@@ -163,21 +163,20 @@ class BibtexLexer(RegexLexer):
               bygroups(
                   Keyword.Declaration, 
                   Punctuation), 
-             '@comment'),
+             '@comment'),  # like 'bracket', but contents tokenized as Comment instead
              
-             (r'(?i)(@(?:article|book|booklet|conference|inbook|incollection|'
-             r'inproceedings|manual|mastersthesis|misc|phdthesis|proceedings|'
-             r'techreport|unpublished))\s*({)',
+             (r'(?i)(@(?:' + _pubtypes_re_string + r'))\s*({)',
              bygroups(
                  Keyword.Reserved, 
                  Punctuation), 
             'entry'),
             
-            (r'(@[^ {]*)\s*({)',
-             bygroups(
-                 Keyword, 
-                 Punctuation), 
-            'entry'),
+            (r'(@[^ {]+)\s*({)',
+                 bygroups(
+                     Keyword, 
+                     Punctuation), 
+                'entry'
+            ),
             
             (r'.*\n', Comment),
         ],
@@ -185,29 +184,31 @@ class BibtexLexer(RegexLexer):
         'entry': [
             include('whitespace'),
             (r'([^, ]*)\s*(\,)',
-             bygroups(
-                 Name.Label, 
-                 Punctuation), 
-            'multi_fields'),
+                 bygroups(
+                     Name.Label, 
+                     Punctuation), 
+                'field_multi'
+            ),
         ],
 
-        'multi_fields': [
+        'field_multi': [
             include('whitespace'),
             
             (r'}', Punctuation, '#pop:2'), # pop back to root
             
             (r'([^}=\s]*)\s*(=)', 
-            bygroups(
-                Name.Attribute, 
-                Operator), 
-            'multi_values'),
+                bygroups(
+                    Name.Attribute, 
+                    Operator), 
+                'value_multi'
+            ),
             
             (r'[^}]+\n', Text),
         ],
 
-        'multi_values': [
+        'value_multi': [
             include('value'),
-            (r',', Punctuation, '#pop'), # pop back to multi_fields
+            (r',', Punctuation, '#pop'), # pop back to field_multi
             (r'}', Punctuation, '#pop:3'), # pop back to root
         ],
 
@@ -215,11 +216,11 @@ class BibtexLexer(RegexLexer):
             include('whitespace'),
             (r'}', Punctuation, '#pop'), # pop back to root
             (r'([^}=\s]*)\s*(=)',
-            bygroups(
-                Name.Label, 
-                Operator), 
-            'single_value'),
-            
+                bygroups(
+                    Name.Label, 
+                    Operator), 
+                'single_value'
+            ),
             (r'[^}]+\n', Text),
         ],
 
