@@ -7,11 +7,14 @@ install:
     # update aptitude
     #- sudo apt-get update -y
 
-    # install aptitude packages
-    #- LDFLAGS=-lm sudo apt-get install -y $(< requirements-travis.txt)
+    # install aptitude packages (required for PyVows)
+    - LDFLAGS=-lm sudo apt-get install -y libevent-dev libxml2-dev libcurl4-gnutls-dev python-pycurl-dbg
 
-    # install python requirements
-    - pip install docopt pygments pyvows --use-mirrors
+    # install python requirements (package)
+    - pip install docopt pygments --use-mirrors
+    
+    # install python requirements (testing)
+    - pip install pyvows
     - pip install coveralls
 
     # weird travis-ci python paths
@@ -31,7 +34,7 @@ script:
     - export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.7/site-packages/
 
     # finally run tests
-    - env PYTHONPATH=. python ./bibtexml2
+    - env PYTHONPATH=. pyvows ./tests
 
 
 after_success:
