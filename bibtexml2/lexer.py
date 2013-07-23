@@ -121,7 +121,7 @@ class BibtexLexer(RegexLexer):
     ### TODO: Change '=' type from Token.Text to Operator
     
     name        = 'BibTeX'
-    aliases     = ['bibtex', 'bib']
+    aliases     = ['bibtex', 'bib', 'bibtexml']
     filenames   = ['*.bib']
     tokens      = {
         'whitespace': [

@@ -81,15 +81,10 @@ config = {
     'setup_requires':   ['docopt', 'pygments'],
     'tests_require':    ['pyvows>=2.0.4'],
     
-    'entry_points':     
-        '''
-        [pygments.lexers]
-        bibtexml2 = bibtexml2.lexer:BibtexLexer
-        
-        [console_scripts]
-        bibtexml2 = bibtexml2.__main__:main
-        '''
-    ,
+    'entry_points':     {
+        'pygments.lexers': 'bibtex = bibtexml2.lexer:BibtexLexer',
+        'console_scripts': 'bibtexml2 = bibtexml2.__main__:main'
+    },
     
     #'scripts': [],
 }
