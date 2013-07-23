@@ -94,7 +94,7 @@ class FilesToLex(Vows.Context):
         
         class EntriesAndFields(Vows.Context):
             def topic(self, parent_topic):
-                tokentypes = {Token.Keyword.Declaration, Token.Name.Attribute}
+                tokentypes = frozenset((Token.Keyword.Declaration, Token.Name.Attribute))
                 if parent_topic['token'][0] in tokentypes:
                     yield parent_topic['token'][1]
                     
