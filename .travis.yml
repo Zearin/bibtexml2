@@ -28,7 +28,7 @@ install:
 
 script:
     # finally run tests
-    - env PYTHONPATH=. coverage run --source=bibtexml2  ./tests
+    - env PYTHONPATH=. coverage run --source=bibtexml2 -m pyvows ./tests
 
 after_success:
     - coveralls
