@@ -14,23 +14,21 @@ before_install:
 
     # install aptitude packages (pyvows requirements)
     - LDFLAGS=-lm sudo apt-get install -y libevent-dev libxml2-dev libcurl4-gnutls-dev python-pycurl-dbg
-
-install:
-    # install python requirements (package)
-    - pip install docopt pygments --use-mirrors
     
     # install python requirements (testing)
     - pip install pyvows
     - pip install coverage coveralls
 
+install:
+    # install python requirements (package)
+    - pip install --use-mirrors .
+
     # verify requirements were met
     #- INSTALLDIR=$(python -c "import os; import gevent; print(os.path.dirname(gevent.__file__))")
 
-
 script:
     # finally run tests
-    - env PYTHONPATH=. coverage run --source=bibtexml2 python -m pyvows ./tests
-
+    - env PYTHONPATH=. coverage run --source=bibtexml2  ./tests
 
 after_success:
     - coveralls
