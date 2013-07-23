@@ -59,9 +59,9 @@ except ImportError as err:
     sys.exit(err)
 
 
-FILES = {f for f in os.listdir(TESTDATA_PATH)
-            if f != 'testcases.bib' } # causes weird encoding errors; fix later
-FILES = {path.join(TESTDATA_PATH, f) for f in FILES}
+FILES = set((f for f in os.listdir(TESTDATA_PATH)
+            if f != 'testcases.bib')) # causes weird encoding errors; fix later
+FILES = set((path.join(TESTDATA_PATH, f) for f in FILES))
 LEXER = lexer.BibtexLexer()
 
 
