@@ -4,13 +4,14 @@ python:
   - '2.6'
   - '2.7'
 
-install:
+before_install:
     # update aptitude
     - sudo apt-get update -y
 
     # install aptitude packages (pyvows requirements)
     - LDFLAGS=-lm sudo apt-get install -y libevent-dev libxml2-dev libcurl4-gnutls-dev python-pycurl-dbg
 
+install:
     # install python requirements (package)
     - pip install docopt pygments --use-mirrors
     
