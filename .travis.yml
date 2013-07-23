@@ -21,7 +21,7 @@ install:
     
     # install python requirements (testing)
     - pip install pyvows
-    - pip install coveralls
+    - pip install coverage coveralls
 
     # verify requirements were met
     #- INSTALLDIR=$(python -c "import os; import gevent; print(os.path.dirname(gevent.__file__))")
@@ -29,7 +29,7 @@ install:
 
 script:
     # finally run tests
-    - env PYTHONPATH=. pyvows ./tests
+    - env PYTHONPATH=. coverage run --source=bibtexml2 pyvows ./tests
 
 
 after_success:
