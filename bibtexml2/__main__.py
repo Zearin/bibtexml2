@@ -73,10 +73,13 @@ def main():
         # lex away at zee source!
         for idx, item in enumerate(pygments.lex(code, lexer)):
             tokentype, tokenvalue = item[0], item[1]
-            if tokentype not in frozenset([Token.Text.Whitespace, Token.Punctuation]):
-                print(
-                    "{0:>5}\t{1[0]!s}\t{1[1]!r}".format(idx, item),
-                    file=sys.stdout)
+            
+            if tokentype in frozenset([Token.Text.Whitespace, Token.Punctuation]):
+                continue
+                
+            print(  "{0:>5}\t{1[0]!s}\t{1[1]!r}".format(idx, item),
+                    file=sys.stdout )
+            
             continue
             
             if tokentype == Token.Keyword.Declaration:      # entry
