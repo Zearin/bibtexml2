@@ -115,7 +115,7 @@ class FilesToLex(Vows.Context):
                 expect(topic[1]).to_match(r'\s+')
         
         
-        class EntriesAndFields(token_context( (Token.Keyword.Declaration,
+        class EntriesAndFields(token_context( (Token.Keyword.Reserved,
                                                Token.Name.Attribute) )):
             def contain_no_whitespace(self, topic):
                 pre_strip, post_strip = topic[1], topic[1].strip()
