@@ -24,7 +24,13 @@ import sys
 from    docopt import docopt
 
 import  pygments
-from    pygments.token import *
+from    pygments.filters    import (
+    KeywordCaseFilter, 
+    TokenMergeFilter, 
+    RaiseOnErrorTokenFilter,)
+    
+from    pygments.token      import *
+
 
 ##  Internal
 from    bibtexml2 import (
@@ -53,6 +59,9 @@ def main():
         )
 
     lexer = BibtexLexer()
+    lexer.add_filter( RaiseOnErrorTokenFilter() )
+    #lexer.add_filter( TokenMergeFilter() )
+    lexer.add_filter( KeywordCaseFilter(case='lower') )
     
     for f in arguments['<file>']:
         
