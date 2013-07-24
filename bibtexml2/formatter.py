@@ -22,4 +22,4 @@ xml         = xmlwitch.Builder()
 class NullFormatter(Formatter):
     def format(self, tokensource, outfile):
         for ttype, value in tokensource:
-            
+            pass  # TODO
