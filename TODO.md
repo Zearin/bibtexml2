@@ -21,13 +21,17 @@ See [bibtexml2/lexer.py](bibtexml2/lexer.py).
 
 ## Filtering
 
+See [bibtexml2/filter.py](bibtexml2/filter.py).
+
 - [ ] Convert special bibtex characters to Unicode/UTF-8 characters
 
 
 ## Formatter
 
+See [bibtexml2/formatter.py](bibtexml2/formatter.py).
+
 - [ ] Convert tokens to XML (using `xmlwitch`)
-- [ ] Output is valid according to original BibTeXML
+- [ ] Valid output (from original BibTeXML schema)
 
 
 
