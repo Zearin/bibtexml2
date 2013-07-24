@@ -66,6 +66,7 @@ except ImportError as err:
 FILES = set((f for f in os.listdir(TESTDATA_PATH)
             if f != 'testcases.bib')) # causes weird encoding errors; fix later
 FILES = set((path.join(TESTDATA_PATH, f) for f in FILES))
+
 LEXER = lexer.BibtexLexer()
 LEXER.add_filter( RaiseOnErrorTokenFilter() )
 
@@ -100,10 +101,13 @@ class FilesToLex(Vows.Context):
                 code = ''.join( f.readlines() )
             for item in pygments.lex(code, LEXER):
                 yield item  # 2-tuple of TokenType, TokenValue
-            
-        def we_get_no_lexer_errors(self, topic):
-            expect(topic).not_to_be_an_error()
-            expect(topic[0]).not_to_equal(Token.Error)
+        
+        ##
+        ##  Ignored; use pygments RaiseOnErrorFilter
+        ##
+        # def we_get_no_lexer_errors(self, topic):
+        #     expect(topic).not_to_be_an_error()
+        #     expect(topic[0]).not_to_equal(Token.Error)
         
         
         class WhitespaceTokens(token_context( (Token.Text.Whitespace,) )):
