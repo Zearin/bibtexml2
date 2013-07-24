@@ -26,6 +26,10 @@ import  sys
 ### Third Party
 import  pygments
 from    pygments.token import *
+from    pygments.filters    import (
+    KeywordCaseFilter, 
+    TokenMergeFilter, 
+    RaiseOnErrorTokenFilter,)
     
 import  six
 
@@ -63,6 +67,17 @@ FILES = set((f for f in os.listdir(TESTDATA_PATH)
             if f != 'testcases.bib')) # causes weird encoding errors; fix later
 FILES = set((path.join(TESTDATA_PATH, f) for f in FILES))
 LEXER = lexer.BibtexLexer()
+LEXER.add_filter( RaiseOnErrorTokenFilter() )
+
+#--------------------------------------------------------------------
+##  Custom Contexts
+#--------------------------------------------------------------------
+def token_context(token_types):
+    class Context(Vows.Context):
+        def topic(self, parent_topic):
+            if parent_topic[0] in frozenset(token_types):
+                yield parent_topic
+    return Context
 
 
 #--------------------------------------------------------------------
@@ -83,26 +98,29 @@ class FilesToLex(Vows.Context):
         def topic(self, parent_topic):
             with open(parent_topic, 'r') as f:
                 code = ''.join( f.readlines() )
-            
             for item in pygments.lex(code, LEXER):
-                yield {'file': parent_topic,
-                       'token': item}
+                yield item  # 2-tuple of TokenType, TokenValue
             
         def we_get_no_lexer_errors(self, topic):
-            expect(topic['token'][0]).not_to_equal(Token.Error)
-    
+            expect(topic).not_to_be_an_error()
+            expect(topic[0]).not_to_equal(Token.Error)
         
-        class EntriesAndFields(Vows.Context):
-            def topic(self, parent_topic):
-                tokentypes = frozenset((Token.Keyword.Declaration, Token.Name.Attribute))
-                if parent_topic['token'][0] in tokentypes:
-                    yield parent_topic['token'][1]
-                    
+        
+        class WhitespaceTokens(token_context( (Token.Text.Whitespace,) )):
+            def only_contain_whitespace(self, topic):
+                expect(topic[1]).to_match(r'\s+')
+        
+        
+        class EntriesAndFields(token_context( (Token.Keyword.Declaration,
+                                               Token.Name.Attribute) )):
             def contain_no_whitespace(self, topic):
-                expect(topic).not_to_match(r'\s+')
+                pre_strip, post_strip = topic[1], topic[1].strip()
+                expect(topic[1]).not_to_match(r'\s+')
+                expect(pre_strip == post_strip).to_be_true()
         
         
-        class Entries(Vows.Context):
-            def topic(self, parent_topic):
-                if parent_topic[0] == Token.Keyword.Declaration:
-                    yield parent_topic[1]
+        class Entries(token_context( (Token.Keyword.Reserved, ) )):
+            def have_valid_token_values(self, topic):
+                pubtype = topic[1].lower()
+                pubtype = pubtype.lstrip('@')
+                expect(pubtype in lexer.PUBTYPES).to_be_true()
