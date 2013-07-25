@@ -83,6 +83,7 @@ config = {
     
     'entry_points':     {
         'pygments.lexers': 'bibtex = bibtexml2.lexer:BibtexLexer',
+        'pygments.formatters': 'bibtex = bibtexml2.formatter:BibTeXML',
         'console_scripts': 'bibtexml2 = bibtexml2.__main__:main'
     },
     
