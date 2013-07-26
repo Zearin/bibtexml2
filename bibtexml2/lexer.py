@@ -102,13 +102,12 @@ MONTH_ABBR = ('jan'       ,'feb'      ,'mar'      ,'apr',
 '''Predefined bibTeX "variables" for the months of the year, 
 which resolve to the month's full name.
 '''
+_month_abbr_re_string = '|'.join(MONTH_ABBR)
 
 
 #--------------------------------------------------------------------
 ##  Classes
 #--------------------------------------------------------------------
-
-
 class BibtexLexer(RegexLexer):
     '''This class is a modification of the 'BibtexLexer' class from the module 
     'bibtex-pygments-lexer' (version 0.0.1), originally authored by Marco D. Adelfio. 
@@ -124,6 +123,13 @@ class BibtexLexer(RegexLexer):
     aliases     = ['bibtex', 'bib', 'bibtexml']
     filenames   = ['*.bib']
     tokens      = {
+        'root': [
+            include('whitespace'),
+            include('@nonentries'),
+            include('@entries'),
+            include('raw_comment'),
+        ],
+        
         'whitespace': [
             (r'\s+',    Whitespace)
         ],
@@ -134,56 +140,50 @@ class BibtexLexer(RegexLexer):
             (r'}',      Punctuation, '#pop'),
         ],
         
+        'raw_comment': [
+            (r'.*\n', Comment)
+        ],
+        
+        '@entries': [  
+            (r'(?i)(@(?:' + _pubtypes_re_string + r'))\s*({)',
+                bygroups(
+                    Keyword.Reserved, 
+                    Punctuation), 
+               '@entry'
+               ),
+        ],
+        
+        '@nonentries': [
+            # non-comment @declarations
+            (r'(?i)(@(?:string|preamble))\s*({)',
+                bygroups(
+                    Keyword.Declaration,
+                    Punctuation),
+                'field'),
+             
+            (r'(?i)(@(?:comment))\s*({)',
+                bygroups(
+                    Keyword.Declaration,
+                    Punctuation),
+                '@comment'),  # like 'bracket', but contents tokenized as Comment instead
+             
+             (r'(?i)(@[^(' + _pubtypes_re_string + '){]+)\s*({)',
+                  bygroups(
+                      Keyword, 
+                      Punctuation), 
+                 '@entry'
+             ),
+        ],
+        
         '@comment': [
             (r'[^}{]+', Comment),
             (r'{',      Punctuation, '#push'),
             (r'}',      Punctuation, '#pop'),
         ],
-
-        'value': [
-            include('whitespace'),
-            (r'-?(0|[1-9]\d*)',     Number.Integer),
-            (r'"(\\\\|\\"|[^"])*"', String.Double),
-            (r"'(\\\\|\\'|[^'])*'", String.Single),
-            (r'{',                  Punctuation,            'bracket'),
-            (r'[^,}{]+',            Text),
-        ],
         
-        
-        'root': [
+        '@entry': [
             include('whitespace'),
-            
-            (r'(?i)(@(?:string|preamble))\s*({)',
-             bygroups(
-                 Keyword.Declaration, 
-                 Punctuation),
-             'field'),
-             
-             (r'(?i)(@(?:comment))\s*({)',
-              bygroups(
-                  Keyword.Declaration, 
-                  Punctuation), 
-             '@comment'),  # like 'bracket', but contents tokenized as Comment instead
-             
-             (r'(?i)(@(?:' + _pubtypes_re_string + r'))\s*({)',
-             bygroups(
-                 Keyword.Reserved, 
-                 Punctuation), 
-            'entry'),
-            
-            (r'(@[^ {]+)\s*({)',
-                 bygroups(
-                     Keyword, 
-                     Punctuation), 
-                'entry'
-            ),
-            
-            (r'.*\n', Comment),
-        ],
-
-        'entry': [
-            include('whitespace'),
-            (r'([^, ]*)\s*(\,)',
+            (r'(?i)([^, ]*)\s*(\,)',
                  bygroups(
                      Name.Label, 
                      Punctuation), 
@@ -196,7 +196,7 @@ class BibtexLexer(RegexLexer):
             
             (r'}', Punctuation, '#pop:2'), # pop back to root
             
-            (r'([^}=\s]*)\s*(=)', 
+            (r'(?i)([^}=\s]*)\s*(=)', 
                 bygroups(
                     Name.Attribute, 
                     Operator), 
@@ -205,28 +205,39 @@ class BibtexLexer(RegexLexer):
             
             (r'[^}]+\n', Text),
         ],
+        
+        'field': [
+            include('whitespace'),
+            (r'}', Punctuation, '#pop'), # pop back to root
+            (r'(?i)([^}=\s]*)\s*(=)',
+                bygroups(
+                    Name.Label, 
+                    Operator), 
+                'value_single'
+            ),
+            (r'[^}]+\n', Text),
+        ],
 
+        'value': [
+            include('whitespace'),
+            (r'-?(0|[1-9]\d*)',     Number.Integer),
+            (r'"(\\\\|\\"|[^"])*"', String.Double),
+            (r"'(\\\\|\\'|[^'])*'", String.Single),
+            (r'{',                  Punctuation,            'bracket'),
+            (r'[^,}{]+',            Text),
+        ],
+        
         'value_multi': [
             include('value'),
             (r',', Punctuation, '#pop'), # pop back to field_multi
             (r'}', Punctuation, '#pop:3'), # pop back to root
         ],
 
-        'field': [
-            include('whitespace'),
-            (r'}', Punctuation, '#pop'), # pop back to root
-            (r'([^}=\s]*)\s*(=)',
-                bygroups(
-                    Name.Label, 
-                    Operator), 
-                'single_value'
-            ),
-            (r'[^}]+\n', Text),
-        ],
-
-        'single_value': [
+        'value_single': [
             include('value'),
             (r'}', Punctuation, '#pop:2'), # pop back to root
         ],
+        
+        
         
     }
