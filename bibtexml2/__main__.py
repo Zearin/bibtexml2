@@ -64,38 +64,21 @@ def main():
     lexer.add_filter( KeywordCaseFilter(case='lower') )
     
     for f in arguments['<file>']:
-        
         # get bibtex source
         code = None
         with open(f, 'r') as f:
             code = ''.join( f.readlines() )
 
-        # lex away at zee source!
+        # NOW LEX SEE CODE!
         for idx, item in enumerate(pygments.lex(code, lexer)):
             tokentype, tokenvalue = item[0], item[1]
             
-            if tokentype in frozenset([Token.Text.Whitespace, Token.Punctuation]):
-                continue
-                
-            print(  "{0:>5}\t{1[0]!s}\t{1[1]!r}".format(idx, item),
-                    file=sys.stdout )
-            
-            continue
-            
-            if tokentype == Token.Keyword.Declaration:      # entry
-                sys.stdout.write( '\n' + tokenvalue )
-                    
-            elif tokentype == Token.Name.Label:             # bibtex-id
-                sys.stdout.write( '\tid=' + tokenvalue )
-                
-            elif tokentype == Token.Name.Attribute:         # field
-                sys.stdout.write( '\t' + tokenvalue)
-                
-            elif tokentype == Token.Literal.String.Double:  # value 
-                sys.stdout.write( (2*'\t') + tokenvalue )
-            
+            # if tokentype in frozenset([Token.Text.Whitespace, Token.Punctuation]):
+            #     continue
             else:
-                continue
+                print(  "{0:>5}\t{1[0]!s}\t{1[1]!r}".format(idx, item),
+                        file=sys.stdout )
+
             
             
 if __name__ == '__main__':
