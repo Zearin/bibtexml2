@@ -16,13 +16,13 @@ except ImportError:
     from distutils.core import setup
 from    textwrap import dedent
 
-
+##---------------------------------------------------------------
 __name__            = 'bibtexml2'
 __version__         = '0.2'
 __author__          = 'Zearin'
 __author_email__    = 'zearin@users.sourceforge.net'
 __description__     = __doc__.splitlines()[0]
-
+##---------------------------------------------------------------
 
 config = {
     ##
