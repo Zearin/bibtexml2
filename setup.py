@@ -4,36 +4,25 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-
 from    textwrap import dedent
+
+import bibtexml2 
 
 
 config = {
     ##
     ##  OVERALL
     ##---------------------------------------------------------------
-    'name':             'bibtexml2',
-    'version':          '0.1',
-    'description':      'Convert bibTeX files to XML (with Pygments).',
-    'long_description': dedent(
-        
-        '''Convert bibTeX files to XML!  
-
-        Useful for manipulating bibTeX data as XML with XML toolsets.
-        
-        If you don't like something about bibtexml2, it's built with Pygments--so 
-        you have its mature, widespread ecosystem at your disposal to tweak 
-        whatever you want.
-        
-        ''' # add story of inspiration by original BibTeXML project on SourceForge
-        
-        ),
+    'name':             bibtexml2.__name__,
+    'version':          bibtexml2.__version__,
+    'description':      bibtexml2.__description__,
+    'long_description': bibtexml2.__doc__,
         
     ##
     ##  PEOPLE
     ##---------------------------------------------------------------
-    'author':       'Zearin',
-    'author_email': 'zearin@users.sourceforge.net',
+    'author':       bibtexml2.__author__,
+    'author_email': bibtexml2.__author_email__,
 
         
     
@@ -76,7 +65,7 @@ config = {
     ##
     ##  TECHNICAL
     ##---------------------------------------------------------------
-    'packages':         ['bibtexml2'],
+    'packages':         [bibtexml2.__name__],
     'install_requires': ['docopt', 'pygments'],
     'setup_requires':   ['docopt', 'pygments'],
     'tests_require':    ['pyvows>=2.0.4'],
