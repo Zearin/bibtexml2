@@ -1,4 +1,14 @@
 # -*- coding: utf-8 -*-
+'''Convert bibTeX files to XML!  Built on Pygments.
+
+Useful for manipulating bibTeX data as XML with XML toolsets.
+
+If you don't like something about bibtexml2, it's built with Pygments--so 
+you have its mature, widespread ecosystem at your disposal to tweak 
+whatever you want.
+
+'''
+
 
 try:
     from setuptools import setup
@@ -6,26 +16,29 @@ except ImportError:
     from distutils.core import setup
 from    textwrap import dedent
 
-import bibtexml2 
+
+__name__            = 'bibtexml2'
+__version__         = '0.2'
+__author__          = 'Zearin'
+__author_email__    = 'zearin@users.sourceforge.net'
+__description__     = __doc__.splitlines()[0]
 
 
 config = {
     ##
     ##  OVERALL
     ##---------------------------------------------------------------
-    'name':             bibtexml2.__name__,
-    'version':          bibtexml2.__version__,
-    'description':      bibtexml2.__description__,
-    'long_description': bibtexml2.__doc__,
+    'name':             __name__,
+    'version':          __version__,
+    'description':      __description__,
+    'long_description': __doc__,
         
     ##
     ##  PEOPLE
     ##---------------------------------------------------------------
-    'author':       bibtexml2.__author__,
-    'author_email': bibtexml2.__author_email__,
-
-        
-    
+    'author':           __author__,
+    'author_email':     __author_email__,
+                        
     ##
     ##  METADATA
     ##---------------------------------------------------------------
@@ -71,9 +84,9 @@ config = {
     'tests_require':    ['pyvows>=2.0.4'],
     
     'entry_points':     {
-        'pygments.lexers': 'bibtex = bibtexml2.lexer:BibtexLexer',
-        'pygments.formatters': 'bibtex = bibtexml2.formatter:BibTeXML',
-        'console_scripts': 'bibtexml2 = bibtexml2.__main__:main'
+        'pygments.lexers':      'bibtex = bibtexml2.lexer:BibtexLexer',
+        'pygments.formatters':  'bibtex = bibtexml2.formatter:BibTeXML',
+        'console_scripts':      'bibtexml2 = bibtexml2.__main__:main'
     },
     
     #'scripts': [],
