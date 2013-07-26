@@ -78,7 +78,7 @@ config = {
     ##
     ##  TECHNICAL
     ##---------------------------------------------------------------
-    'packages':         [bibtexml2.__name__],
+    'packages':         [__name__],
     'install_requires': ['docopt', 'pygments'],
     'setup_requires':   ['docopt', 'pygments'],
     'tests_require':    ['pyvows>=2.0.4'],
