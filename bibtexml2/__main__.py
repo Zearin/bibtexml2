@@ -75,9 +75,8 @@ def main():
             
             # if tokentype in frozenset([Token.Text.Whitespace, Token.Punctuation]):
             #     continue
-            else:
-                print(  "{0:>5}\t{1[0]!s}\t{1[1]!r}".format(idx, item),
-                        file=sys.stdout )
+            print(  "{0:>5}\t{1[0]!s:<25}\t{1[1]!r}".format(idx, item),
+                    file=sys.stdout )
 
             
             
